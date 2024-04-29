@@ -1,1 +1,1 @@
-export const safeAddress= "0x6b594E0eD457654FD3F129de134d343ab3bf8957"
+export const safeAddress= "0x96783b06b8D821E8422fC5F3014aDAa3Ab6142c2"
