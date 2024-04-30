@@ -45,14 +45,14 @@ async function main() {
   const chainId = (await ethers.provider.getNetwork()).chainId;
   console.log(chainId)
   const automate = new AutomateSDK(chainId, deployer);
-  const cid="TBD"
+  const cid="QmQirxM6u3zycZKsGUmGzutSzGXBxyTFCAonGZrH5BwN63"
   
   const { taskId, tx } = await automate.prepareBatchExecTask({
     name: "Redstone Feed BTC/USD",
     web3FunctionHash: cid,
     web3FunctionArgs: {
       "priceFeed":"BTC",
-      "priceFeedAdapterAddress":"TBD"
+      "priceFeedAdapterAddress":"0xbF675f4AF4351ee79B95f24651f4E3741079af5E"
     },
     trigger: {
       interval: 10 * 1000,
