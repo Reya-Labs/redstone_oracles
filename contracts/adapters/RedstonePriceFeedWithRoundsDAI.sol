@@ -16,12 +16,21 @@ contract RedstonePriceFeedWithRoundsDAI is MergedPriceFeedAdapterWithRounds {
     return 0;
   }
 
+  /**
+   * @notice In the base implementation Reverts if the proposed timestamp of data packages it too old or too new
+   * comparing to the current block timestamp
+   * @param dataPackagesTimestamp The proposed timestamp (usually in milliseconds)
+   * This (base) validation is avoided since does not allow to update the price when the block.timestamp
+   * is older than a certain threshold.
+   */
+  function validateDataPackagesTimestampOnce(uint256 dataPackagesTimestamp) public override view {}
+
   function getDataFeedId() public pure  override returns (bytes32) {
     return DAI_ID;
   }
 
 
-    function getDataServiceId() public pure override returns (string memory) {
+  function getDataServiceId() public pure override returns (string memory) {
     return "redstone-primary-prod";
   }
 
