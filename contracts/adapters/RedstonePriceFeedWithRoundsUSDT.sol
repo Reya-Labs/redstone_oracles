@@ -26,7 +26,7 @@ contract RedstonePriceFeedWithRoundsUSDT is MergedPriceFeedAdapterWithRounds {
   }
 
   function getUniqueSignersThreshold() public pure override returns (uint8) {
-    return 2;
+    return 3;
   }
 
   function getAuthorisedSignerIndex(
