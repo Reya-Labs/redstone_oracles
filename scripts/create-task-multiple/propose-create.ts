@@ -20,7 +20,6 @@ const { ethers } = hre;
 
 async function main() {
 
-
   const [deployer] = await ethers.getSigners(); 
 
   const ethAdapter = new EthersAdapter({
@@ -44,24 +43,35 @@ async function main() {
 
 
   const chainId = (await ethers.provider.getNetwork()).chainId;
-
+  console.log(chainId)
   const automate = new AutomateSDK(chainId, deployer);
-   const cid="QmP6HbRph827Q3B4Ju7GSgmrAKqXzoWr6cT9NZ7HM7XCsW"
+  const cid="QmbtQ4ZTHUemg6oqCwkjqYc4MrHQvK7ACEbc1xPXNU1A9B"
   
   const { taskId, tx } = await automate.prepareBatchExecTask({
     name: "Web3Function - Reya Multiple",
     web3FunctionHash: cid,
     web3FunctionArgs: { 
-      // "priceFeeds":["ETH", "BTC", "WBTC", "USDC", "USDT", "DAI" ],
-      // "priceFeedAdapterAddresses":["0xa7fca6F37eCA129409af5d9d88e015De51C4aff3","0xc7021763f59F1E3081a36589b701e6928F119961","0xB50CA437B949e9496C4674B20F1D5dd597c59027", "0xCe05AcdD57f1f2e8666386ea7Ed20504a63D0700","0x260aADC4E51D4ECA2f3Aa998AffC1f9becC110b8","0xc2E00Dea3cc483e057519D1df9d313EF2a52C1Ae"]
-       "priceFeed":"BTC",
-      "priceFeedAdapterAddress":"0xc7021763f59F1E3081a36589b701e6928F119961"
-    },
+      "priceFeeds":["ETH", "BTC", "WBTC", "USDC", "USDT", "DAI" ],
+      "priceFeedAdapterAddresses":["0xa7fca6F37eCA129409af5d9d88e015De51C4aff3","0xc7021763f59F1E3081a36589b701e6928F119961","0xB50CA437B949e9496C4674B20F1D5dd597c59027", "0xCe05AcdD57f1f2e8666386ea7Ed20504a63D0700","0x260aADC4E51D4ECA2f3Aa998AffC1f9becC110b8","0xc2E00Dea3cc483e057519D1df9d313EF2a52C1Ae"]
+      },
     trigger: {
       interval: 10 * 1000,
       type: TriggerType.TIME,
     },
-  });
+  },{},safeAddress);
+  console.log(tx.data)
+  console.log(tx.to)
+
+  // let tx2 = await deployer.sendTransaction({
+  //   data:tx.data,
+  //   to:tx.to,
+  // })
+
+  // await tx2.wait()
+
+  console.log(taskId);
+  throw("a")
+
   const txServiceUrl = 'https://transaction.safe.reya.network'
   const service = new SafeApiKit({ txServiceUrl, ethAdapter: ethAdapter })
 
@@ -77,8 +87,15 @@ async function main() {
   const senderAddress = await deployer.getAddress()
   const safeTxHash = await protocolKit.getTransactionHash(safeTransaction)
   const signature = await protocolKit.signTransactionHash(safeTxHash)
-  const response = await service.confirmTransaction(safeTxHash, signature.data)
-  console.log('Confirmed a transaction with Safe:', safeAddress)
+  await service.proposeTransaction({
+    safeAddress: safeAddress,
+    safeTransactionData: safeTransaction.data,
+    safeTxHash,
+    senderAddress ,
+    senderSignature: signature.data
+  })
+
+  console.log('Proposed a transaction with Safe:', safeAddress)
   console.log('- safeTxHash:', safeTxHash)
   console.log('- Sender:', senderAddress)
   console.log('- Sender signature:', signature.data)

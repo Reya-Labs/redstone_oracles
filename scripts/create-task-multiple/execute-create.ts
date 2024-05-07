@@ -15,11 +15,11 @@ dotenv.config({ path: ".env" });
 import SafeApiKit from "@safe-global/api-kit";
 import { AutomateSDK, TriggerType } from "@gelatonetwork/automate-sdk";
 import { safeAddress } from "../safe";
+import { Signer } from "ethers";
 
 const { ethers } = hre;
 
 async function main() {
-
 
   const [deployer] = await ethers.getSigners(); 
 
@@ -28,11 +28,13 @@ async function main() {
     signerOrProvider: deployer,
   });
 
+ 
 
   const protocolKit = await Safe.create({
     ethAdapter,
     safeAddress,
   });
+
 
   const predictedSafeAddress =
     await protocolKit.getAddress();
@@ -43,33 +45,19 @@ async function main() {
   console.log({ isSafeDeployed });
 
 
-  const chainId = (await ethers.provider.getNetwork()).chainId;
-
-  const automate = new AutomateSDK(chainId, deployer);
- 
-  const {tx,taskId} = await automate.prepareCancelTask("0x5f7b966639c0473e2ef421e98d702c4876a87807f2ea4b4b2207bd12375b1121")
-
-  const txServiceUrl =  'https://transaction.safe.reya.network'
+  const txServiceUrl = 'https://transaction.safe.reya.network'
   const service = new SafeApiKit({ txServiceUrl, ethAdapter: ethAdapter })
 
-  const safeTransactionData: MetaTransactionData = {
-    to: tx.to,
-    data: tx.data,
-    value: "0",
-    operation: OperationType.Call,
-  };
-
+ 
+ 
     // Propose transaction to the service 
-  const safeTransaction = await protocolKit.createTransaction({ safeTransactionData })
-  const senderAddress = await deployer.getAddress()
-  const safeTxHash = await protocolKit.getTransactionHash(safeTransaction)
-  const signature = await protocolKit.signTransactionHash(safeTxHash)
-  const response = await service.confirmTransaction(safeTxHash, signature.data)
+  const safeTransaction = await service.getTransaction("0xd4dc84dd97990d4bf1cb58217d0671f74652eb2a16e8145c05a3ccc502b9e7eb")
+  const executeTxResponse = await protocolKit.executeTransaction(safeTransaction)
+  const receipt = await executeTxResponse.transactionResponse?.wait()
+
   console.log('Confirmed a transaction with Safe:', safeAddress)
-  console.log('- safeTxHash:', safeTxHash)
-  console.log('- Sender:', senderAddress)
-  console.log('- Sender signature:', signature.data)
-  console.log('- TaskId:', taskId)
+  console.log('- txHash: ', receipt!.transactionHash)
+
 
 }
 main();

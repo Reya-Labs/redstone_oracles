@@ -42,12 +42,12 @@ async function main() {
   console.log({ isSafeDeployed });
 
 
-  const txServiceUrl = 'https://safe-transaction-sepolia.safe.global'
+  const txServiceUrl = 'https://transaction.safe.reya.network'
   const service = new SafeApiKit({ txServiceUrl, ethAdapter: ethAdapter })
  
  
     // Propose transaction to the service 
-  const safeTransaction = await service.getTransaction("0x064d939d0f073d041328c02faa8404ac5ef3a196b2301307d21c5595c444fd29")
+  const safeTransaction = await service.getTransaction("0x45409dec2d9b33443120da4b4fafd866ff62e3a82283df2882307aec65723b3f")
   const executeTxResponse = await protocolKit.executeTransaction(safeTransaction)
   const receipt = await executeTxResponse.transactionResponse?.wait()
 
