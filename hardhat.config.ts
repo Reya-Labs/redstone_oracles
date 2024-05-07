@@ -25,7 +25,7 @@ const config: HardhatUserConfig = {
   w3f: {
     rootDir: "./web3-functions",
     debug: false,
-    networks: ["hardhat", "liskSepolia", "reya"], //(multiChainProvider) injects provider for these networks
+    networks: ["hardhat", "liskSepolia", "reya", "reyaCronos"], //(multiChainProvider) injects provider for these networks
   },
   // hardhat-deploy
   namedAccounts: {
@@ -33,7 +33,7 @@ const config: HardhatUserConfig = {
       default: 0,
     },
   },
-  defaultNetwork: "reya",
+  defaultNetwork: "reyaCronos",
 
   networks: {
     hardhat: {
@@ -118,19 +118,19 @@ const config: HardhatUserConfig = {
         }
       },
       {
-        network: "reyaCronos",
-        chainId: 89346161,
-        urls: {
-          apiURL: "https://reya-cronos.blockscout.com/api",
-          browserURL: "https://reya-cronos.blockscout.com"
-        }
-      },
-      {
         network: "reya",
         chainId: 1729,
         urls: {
           apiURL: "https://explorer.reya.network/api",
           browserURL: "https://explorer.reya.network"
+        }
+      },
+      {
+        network: "reyaCronos",
+        chainId: 89346161,
+        urls: {
+          apiURL: "https://reya-cronos.blockscout.com/api",
+          browserURL: "https://reya-cronos.blockscout.com/"
         }
       },
       {
