@@ -25,6 +25,14 @@ contract RedstonePriceFeedWithRoundsUSDC is MergedPriceFeedAdapterWithRounds {
    */
   function validateDataPackagesTimestampOnce(uint256 dataPackagesTimestamp) public override view {}
 
+  /**
+   * @dev This function is overridden to avoid the validation discussed in below comments
+   * It should validate the timestamp against the current time (block.timestamp)
+   * It should revert with a helpful message if the timestamp is not valid
+   * @param receivedTimestampMilliseconds Timestamp extracted from calldata
+   */
+  function validateTimestamp(uint256 receivedTimestampMilliseconds) public override view {}
+
   function getDataFeedId() public pure  override returns (bytes32) {
     return USDC_ID;
   }
