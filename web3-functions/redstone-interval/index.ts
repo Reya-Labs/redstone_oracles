@@ -4,13 +4,15 @@ import {
 } from "@gelatonetwork/web3-functions-sdk";
 import { BigNumber, Contract, ethers } from "ethers";
 
-import * as sdk from "@redstone-finance/sdk";
-import { WrapperBuilder } from "@redstone-finance/evm-connector";
+import { requestDataPackages } from "@redstone-finance/sdk";
+import {
+  DataPackagesWrapper,
+} from "@redstone-finance/evm-connector";
+
 const parsePrice = (value: Uint8Array) => {
   const bigNumberPrice = ethers.BigNumber.from(value);
   return bigNumberPrice.toNumber() / 10 ** 8; // Redstone uses 8 decimals
-};
-
+}
 Web3Function.onRun(async (context: Web3FunctionContext) => {
   const { userArgs, multiChainProvider, secrets, storage } = context;
 
@@ -35,38 +37,36 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
 
   const priceFeedAdapter = new Contract(priceFeedAdapterAddress, abi, provider);
 
-
-  const getLatestSignedPrice = await sdk.requestDataPackages({
+  const latestSignedPrice = await requestDataPackages({
     dataServiceId: "redstone-primary-prod",
     uniqueSignersCount: 3,
     dataFeeds: [priceFeed],
-    urls: ["https://oracle-gateway-1.a.redstone.finance"],
   });
 
-  // Wrap contract with redstone data service
-  const wrappedOracle =
-    WrapperBuilder.wrap(priceFeedAdapter).usingDataService(
-      getLatestSignedPrice
-    );
 
+  // Wrap contract with redstone data service
+  const dataPackagesWrapper = new DataPackagesWrapper(
+      latestSignedPrice
+  );
+  const wrappedOracle = dataPackagesWrapper.overwriteEthersContract(priceFeedAdapter);
   // Retrieve stored & live prices
 
-  const { dataPackage } = getLatestSignedPrice[priceFeed]![0];
- 
+  const { dataPackage } = latestSignedPrice[priceFeed]![0];
+
   const parsedPrice = parsePrice(dataPackage.dataPoints[0].value);
 
   // Craft transaction to update the price on-chain
   console.log(`Setting ${priceFeed} price in PriceFeed contract to: ${parsedPrice}`);
   const { data } =
-    await wrappedOracle.populateTransaction.updateDataFeedsValues(
-      dataPackage.timestampMilliseconds
-    );
- 
+      await wrappedOracle.populateTransaction.updateDataFeedsValues(
+          dataPackage.timestampMilliseconds
+      );
 
-    return {
-      canExec: true,
-      callData: [{ to: priceFeedAdapterAddress, data: data as string }],
-    };
+
+  return {
+    canExec: true,
+    callData: [{ to: priceFeedAdapterAddress, data: data as string }],
+  };
 
 
 });
