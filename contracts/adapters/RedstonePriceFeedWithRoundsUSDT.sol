@@ -10,29 +10,6 @@ contract RedstonePriceFeedWithRoundsUSDT is MergedPriceFeedAdapterWithRounds {
   error UpdaterNotAuthorised(address signer);
 
 
-  // By default, we have 3 seconds between the updates, but in the REya Use Case
-  // We need to set it to 0 to avoid conflicts between users
-  function getMinIntervalBetweenUpdates() public view virtual override returns (uint256) {
-    return 0;
-  }
-
-  /**
-   * @notice In the base implementation Reverts if the proposed timestamp of data packages it too old or too new
-   * comparing to the current block timestamp
-   * @param dataPackagesTimestamp The proposed timestamp (usually in milliseconds)
-   * This (base) validation is avoided since does not allow to update the price when the block.timestamp
-   * is older than a certain threshold.
-   */
-  function validateDataPackagesTimestampOnce(uint256 dataPackagesTimestamp) public override view {}
-
-  /**
-   * @dev This function is overridden to avoid the validation discussed in below comments
-   * It should validate the timestamp against the current time (block.timestamp)
-   * It should revert with a helpful message if the timestamp is not valid
-   * @param receivedTimestampMilliseconds Timestamp extracted from calldata
-   */
-  function validateTimestamp(uint256 receivedTimestampMilliseconds) public override view {}
-
   function getDataFeedId() public pure  override returns (bytes32) {
     return USDT_ID;
   }
