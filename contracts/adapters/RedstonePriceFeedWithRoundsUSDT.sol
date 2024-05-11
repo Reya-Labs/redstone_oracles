@@ -6,12 +6,21 @@ import  "../RedStoneBaseContracts/redstone-oracles-monorepo/packages/on-chain-re
 contract RedstonePriceFeedWithRoundsUSDT is MergedPriceFeedAdapterWithRounds {
 
   bytes32 constant private USDT_ID = bytes32("USDT");
+  address internal constant MAIN_UPDATER_ADDRESS = 0xAE4a45472306D096eB044e303472B09a5eE322a2;
 
   error UpdaterNotAuthorised(address signer);
 
 
   function getDataFeedId() public pure  override returns (bytes32) {
     return USDT_ID;
+  }
+
+  function requireAuthorisedUpdater(address updater) public view override virtual {
+    if (
+      updater != MAIN_UPDATER_ADDRESS
+    ) {
+      revert UpdaterNotAuthorised(updater);
+    }
   }
 
 

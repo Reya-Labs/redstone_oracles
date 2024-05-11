@@ -6,6 +6,7 @@ import  "../RedStoneBaseContracts/redstone-oracles-monorepo/packages/on-chain-re
 contract RedstonePriceFeedWithRoundsDAI is MergedPriceFeedAdapterWithRounds {
 
   bytes32 constant private DAI_ID = bytes32("DAI");
+  address internal constant MAIN_UPDATER_ADDRESS = 0xAE4a45472306D096eB044e303472B09a5eE322a2;
 
   error UpdaterNotAuthorised(address signer);
 
@@ -14,6 +15,13 @@ contract RedstonePriceFeedWithRoundsDAI is MergedPriceFeedAdapterWithRounds {
     return DAI_ID;
   }
 
+  function requireAuthorisedUpdater(address updater) public view override virtual {
+    if (
+      updater != MAIN_UPDATER_ADDRESS
+    ) {
+      revert UpdaterNotAuthorised(updater);
+    }
+  }
 
   function getDataServiceId() public pure override returns (string memory) {
     return "redstone-primary-prod";

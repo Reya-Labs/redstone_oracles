@@ -6,12 +6,21 @@ import  "../RedStoneBaseContracts/redstone-oracles-monorepo/packages/on-chain-re
 contract RedstonePriceFeedWithRoundsUSDC is MergedPriceFeedAdapterWithRounds {
 
   bytes32 constant private USDC_ID = bytes32("USDC");
+  address internal constant MAIN_UPDATER_ADDRESS = 0xAE4a45472306D096eB044e303472B09a5eE322a2;
 
   error UpdaterNotAuthorised(address signer);
 
 
   function getDataFeedId() public pure  override returns (bytes32) {
     return USDC_ID;
+  }
+
+  function requireAuthorisedUpdater(address updater) public view override virtual {
+    if (
+      updater != MAIN_UPDATER_ADDRESS
+    ) {
+      revert UpdaterNotAuthorised(updater);
+    }
   }
 
 
