@@ -41,8 +41,8 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
     dataServiceId: "redstone-primary-prod",
     uniqueSignersCount: 3,
     dataFeeds: [priceFeed],
+    urls: ["https://oracle-gateway-1.a.redstone.vip"],
   });
-
 
   // Wrap contract with redstone data service
   const dataPackagesWrapper = new DataPackagesWrapper(
@@ -52,6 +52,15 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
   // Retrieve stored & live prices
 
   const { dataPackage } = latestSignedPrice[priceFeed]![0];
+
+  const lastTimestampPackage = await storage.get("lastTimestampPackage") ?? "0"
+
+  if (lastTimestampPackage == dataPackage.timestampMilliseconds.toString()) {
+    return {canExec:false, message:"dataPackage not updated!"}
+  } else {
+    await storage.set("lastTimestampPackage", dataPackage.timestampMilliseconds.toString());
+  }
+
 
   const parsedPrice = parsePrice(dataPackage.dataPoints[0].value);
 
