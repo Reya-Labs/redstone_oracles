@@ -7,6 +7,7 @@ contract RedstonePriceFeedWithRoundsUSDT is MergedPriceFeedAdapterWithRounds {
 
   bytes32 constant private USDT_ID = bytes32("USDT");
   address internal constant MAIN_UPDATER_ADDRESS = 0xAE4a45472306D096eB044e303472B09a5eE322a2;
+  address internal constant FALLBACK_UPDATER_ADDRESS = 0x653C22AB4836769036B3D4ABf5780bF4245c6D58;
 
   error UpdaterNotAuthorised(address signer);
 
@@ -17,7 +18,8 @@ contract RedstonePriceFeedWithRoundsUSDT is MergedPriceFeedAdapterWithRounds {
 
   function requireAuthorisedUpdater(address updater) public view override virtual {
     if (
-      updater != MAIN_UPDATER_ADDRESS
+      updater != MAIN_UPDATER_ADDRESS &&
+      updater != FALLBACK_UPDATER_ADDRESS
     ) {
       revert UpdaterNotAuthorised(updater);
     }

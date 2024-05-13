@@ -46,7 +46,7 @@ async function main() {
   const chainId = (await ethers.provider.getNetwork()).chainId;
   console.log(chainId)
   const automate = new AutomateSDK(chainId, deployer);
-  const cid="QmRf6e1Aj8bUYMpYAVY5CMzF1cfds4J7FeHGjefrvjgqb6"
+  const cid="Qmb5S4B5fJJ2J7kbxPdXsaQ3NbPcQTrP1doyioYKPqaxy8"
 
   const { taskId, tx } = await automate.prepareBatchExecTask({
     name: "Redstone Feed USDC/USD",
