@@ -41,7 +41,6 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
     dataServiceId: "redstone-primary-prod",
     uniqueSignersCount: 3,
     dataFeeds: [priceFeed],
-    urls: ["https://oracle-gateway-1.a.redstone.vip"],
   });
 
   // Wrap contract with redstone data service
