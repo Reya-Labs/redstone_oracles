@@ -36,11 +36,13 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
 
 
   const priceFeedAdapter = new Contract(priceFeedAdapterAddress, abi, provider);
+  const url = (await secrets.get("URL")) as string;
 
   const latestSignedPrice = await requestDataPackages({
     dataServiceId: "redstone-primary-prod",
     uniqueSignersCount: 3,
     dataFeeds: [priceFeed],
+    urls: ["https://oracle-gateway-1.a.redstone.finance","https://oracle-gateway-2.a.redstone.finance", "https://oracle-gateway-1.a.redstone.vip", url],
   });
 
   // Wrap contract with redstone data service
@@ -64,7 +66,7 @@ Web3Function.onRun(async (context: Web3FunctionContext) => {
   const parsedPrice = parsePrice(dataPackage.dataPoints[0].value);
 
   // Craft transaction to update the price on-chain
-  console.log(`Setting ${priceFeed} price in PriceFeed contract to: ${parsedPrice}`);
+  console.log(`Setting ${priceFeed} price in PriceFeed contract to: ${parsedPrice}, at ${ dataPackage.timestampMilliseconds}`);
   const { data } =
       await wrappedOracle.populateTransaction.updateDataFeedsValues(
           dataPackage.timestampMilliseconds
