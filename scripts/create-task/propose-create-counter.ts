@@ -53,7 +53,7 @@ async function main() {
         web3FunctionHash: cid,
         web3FunctionArgs: {},
         trigger: {
-            interval: 1000,
+            interval: 5000,
             type: TriggerType.TIME,
         },
     },{},safeAddress);
