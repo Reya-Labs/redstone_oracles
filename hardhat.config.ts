@@ -33,7 +33,7 @@ const config: HardhatUserConfig = {
       default: 0,
     },
   },
-  defaultNetwork: "reya",
+  defaultNetwork: "reyaCronos",
 
   networks: {
     hardhat: {
@@ -74,7 +74,7 @@ const config: HardhatUserConfig = {
     },
     reyaCronos: {
       accounts: PK ? [PK] : [],
-      chainId: 89346161,
+      chainId: 89346162,
       url: `https://rpc.reya-cronos.gelato.digital`,
     },
  
@@ -127,7 +127,7 @@ const config: HardhatUserConfig = {
       },
       {
         network: "reyaCronos",
-        chainId: 89346161,
+        chainId: 89346162,
         urls: {
           apiURL: "https://reya-cronos.blockscout.com/api",
           browserURL: "https://reya-cronos.blockscout.com/"
