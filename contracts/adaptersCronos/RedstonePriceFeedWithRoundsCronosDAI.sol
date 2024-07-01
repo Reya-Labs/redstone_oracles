@@ -6,8 +6,7 @@ import  "../RedStoneBaseContracts/redstone-oracles-monorepo/packages/on-chain-re
 contract RedstonePriceFeedWithRoundsCronosDAI is MergedPriceFeedAdapterWithRounds {
 
   bytes32 constant private DAI_ID = bytes32("DAI");
-  // todo: p1: upgrade to have correct main updater address once web3 functions are ready
-  address internal constant MAIN_UPDATER_ADDRESS = 0xAE4a45472306D096eB044e303472B09a5eE322a2;
+  address internal constant MAIN_UPDATER_ADDRESS = 0xd38D35B9946499eB19De9eDEa47F48C44A217d23;
   address internal constant FALLBACK_UPDATER_ADDRESS = 0x653C22AB4836769036B3D4ABf5780bF4245c6D58;
 
   error UpdaterNotAuthorised(address signer);
