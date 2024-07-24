@@ -49,11 +49,11 @@ async function main() {
   const cid="QmRNaqpX4ww4JHfvQEM9YTzPNuRXHAXzzZUL4KiAnxKvDr"
 
   const { taskId, tx } = await automate.prepareBatchExecTask({
-    name: "Redstone Feed SOL/USD",
+    name: "Redstone Feed ARB/USD",
     web3FunctionHash: cid,
     web3FunctionArgs: {
-      "priceFeed":"SOL",
-      "priceFeedAdapterAddress":"0x7D123d462268A46679dc4A1b89cFC8fBBab7388A"
+      "priceFeed":"ARB",
+      "priceFeedAdapterAddress":"0x7b9e8a8ace50786c9Ee4500d23fe72Ad65D992D0"
     },
     trigger: {
       interval: 1000,
