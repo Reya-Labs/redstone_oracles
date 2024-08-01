@@ -33,7 +33,7 @@ const config: HardhatUserConfig = {
       default: 0,
     },
   },
-  defaultNetwork: "reya",
+  defaultNetwork: "reyaCronos",
 
   networks: {
     hardhat: {
