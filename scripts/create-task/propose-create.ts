@@ -53,7 +53,7 @@ async function main() {
     web3FunctionHash: cid,
     web3FunctionArgs: {
       "priceFeed":"USDe",
-      "priceFeedAdapterAddress":"0x8790C611049F5177e2c7f5943B87684775d93b27"
+      "priceFeedAdapterAddress":"0x039d91224f5e093C603b30709C8fD13fb14f4103"
     },
     trigger: {
       interval: 1000,

@@ -5,7 +5,7 @@ import  "../RedStoneBaseContracts/redstone-oracles-monorepo/packages/on-chain-re
 
 contract RedstonePriceFeedWithRoundsCronosUSDE is MergedPriceFeedAdapterWithRounds {
 
-  bytes32 constant private USDE_ID = bytes32("USDE");
+  bytes32 constant private USDE_ID = bytes32("USDe");
   address internal constant MAIN_UPDATER_ADDRESS = 0xd38D35B9946499eB19De9eDEa47F48C44A217d23;
   address internal constant FALLBACK_UPDATER_ADDRESS = 0x653C22AB4836769036B3D4ABf5780bF4245c6D58;
 
