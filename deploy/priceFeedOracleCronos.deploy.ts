@@ -9,7 +9,24 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
     );
   }
 
-  const priceFeeds = ["ETH", "BTC", "WBTC", "USDC", "USDT", "DAI", "SOL", "ARB", "OP", "AVAX", "USDE", "MKR", "LINK"]
+  const priceFeeds = [
+    "ETH", 
+    "BTC", 
+    "WBTC", 
+    "USDC", 
+    "USDT", 
+    "DAI", 
+    "SOL", 
+    "ARB", 
+    "OP", 
+    "AVAX", 
+    "USDE", 
+    "MKR", 
+    "LINK",
+    "AAVE",
+    "CRV",
+    "UNI",
+  ]
 
   const { deploy } = deployments;
   const { deployer } = await getNamedAccounts();
