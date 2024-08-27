@@ -26,6 +26,7 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironment) => {
     "AAVE",
     "CRV",
     "UNI",
+    "SUSDE"
   ]
 
   const { deploy } = deployments;

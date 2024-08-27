@@ -38,7 +38,7 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       forking: {
-        url:  `https://rpc.reya-cronos.gelato.digital`,
+        url: `https://rpc.reya-cronos.gelato.digital`,
       },
     },
 
